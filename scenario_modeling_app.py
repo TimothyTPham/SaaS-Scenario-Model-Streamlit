@@ -2,12 +2,14 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
+# --- Page config ---
 st.set_page_config(page_title="SaaS Scenario Modeling", layout="centered")
 st.title("📊 SaaS Scenario Modeling")
 
-# --- Step 1: Define Scenarios ---
+# --- Scenario selector ---
 scenario = st.radio("Choose a Scenario", ["Base", "Best Case", "Worst Case"], horizontal=True)
 
+# --- Scenario presets ---
 scenario_inputs = {
     "Base": {
         "ARPU": 200,
@@ -35,26 +37,28 @@ scenario_inputs = {
     }
 }
 
-# --- Step 2: Load Inputs ---
-inputs = scenario_inputs[scenario]
-ARPU = inputs["ARPU"]
-gross_margin = inputs["Gross Margin %"]
-lifetime = inputs["Lifetime"]
-CAC = inputs["CAC"]
-new_customers = inputs["New Customers"]
-fixed_costs = inputs["Fixed Costs"]
+# --- Sidebar editable inputs ---
+st.sidebar.header("✏️ Editable Inputs")
+defaults = scenario_inputs[scenario]
 
-# --- Step 3: Calculations ---
+ARPU = st.sidebar.number_input("ARPU (Monthly Revenue)", min_value=0.0, value=float(defaults["ARPU"]))
+gross_margin = st.sidebar.slider("Gross Margin %", 0, 100, int(defaults["Gross Margin %"] * 100)) / 100
+lifetime = st.sidebar.number_input("Customer Lifetime (Months)", min_value=1, value=int(defaults["Lifetime"]))
+CAC = st.sidebar.number_input("CAC (Customer Acquisition Cost)", min_value=0.0, value=float(defaults["CAC"]))
+new_customers = st.sidebar.number_input("New Customers per Month", min_value=1, value=int(defaults["New Customers"]))
+fixed_costs = st.sidebar.number_input("Fixed Costs (Monthly)", min_value=0.0, value=float(defaults["Fixed Costs"]))
+
+# --- Calculations ---
 monthly_revenue = ARPU * new_customers
 monthly_gross_profit = monthly_revenue * gross_margin
 monthly_CAC_spend = CAC * new_customers
 monthly_burn = fixed_costs + monthly_CAC_spend
 net_cash_flow = monthly_gross_profit - monthly_burn
 LTV = ARPU * gross_margin * lifetime
-LTV_CAC_ratio = LTV / CAC
-payback_period = CAC / (ARPU * gross_margin)
+LTV_CAC_ratio = LTV / CAC if CAC else 0
+payback_period = CAC / (ARPU * gross_margin) if ARPU * gross_margin else 0
 
-# --- Step 4: Display Results ---
+# --- Results table ---
 metrics_df = pd.DataFrame({
     "Metric": [
         "Monthly Revenue",
@@ -83,7 +87,7 @@ metrics_df = pd.DataFrame({
 st.subheader("📉 Scenario Metrics")
 st.table(metrics_df)
 
-# --- Step 5: Visual Chart ---
+# --- Chart ---
 st.subheader("📊 Cash Flow Breakdown")
 
 chart_df = pd.DataFrame({
