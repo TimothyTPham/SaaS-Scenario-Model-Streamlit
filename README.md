@@ -18,7 +18,7 @@ This interactive tool models how different business scenarios impact SaaS financ
 | New Customers / Month    | 250       | 300       | 150        |
 | Fixed Costs / Month      | $40,000   | $35,000   | $45,000    |
 
-All inputs are editable in the sidebar, so users can adjust assumptions as needed.
+All inputs are editable in the sidebar, so users can adjust assumptions as needed. 
 
 ## Key Metrics
 
