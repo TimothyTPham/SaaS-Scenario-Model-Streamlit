@@ -5,7 +5,7 @@
 
 ---
 
-This interactive tool models how different business scenarios impact SaaS financial outcomes. Users can toggle between Base, Best Case, and Worst Case assumptions — with the ability to edit each input — to see how core metrics respond in real time.
+This interactive tool models how different business scenarios impact SaaS financial outcomes. Users can toggle between Base, Best Case, and Worst Case assumptions — with the ability to edit each input — to see how core metrics respond in real time. 
 
 ## Initial Scenario Assumptions
 
